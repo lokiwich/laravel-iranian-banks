@@ -2,19 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
-
-### Changed
-
-- Card detection uses longest-prefix match so Blu (`62198619`) wins over Saman (`621986`) when the number is long enough
-
-## [1.1.0] - 2026-07-16
+## [1.1.0] - 2026-07-19
 
 ### Added
 
 - Sheba `iban_code` column and seed data for Shetab banks
 - `IranianBanks::detectFromIban()` / `Bank::findByIban()` / `Iban` helpers (mod-97, bank code extraction)
 - Validation messages for checksum and unknown bank code
+
+### Changed
+
+- Card detection uses longest-prefix match so Blu (`62198619`) wins over Saman (`621986`) when the number is long enough
+- Blu Bank card prefix set to the fuller BIN `62198619`
 
 ## [1.0.0] - 2026-07-16
 
