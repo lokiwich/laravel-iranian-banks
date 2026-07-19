@@ -161,7 +161,7 @@ return [
         'name_fa' => 'بلو بانک',
         'name_en' => 'Blu Bank',
         // Same Shetab BIN / Sheba family as Saman (subsidiary brand).
-        'card_prefixes' => ['621986'],
+        'card_prefixes' => ['62198619'],
         'iban_codes' => ['056'],
         'icon' => 'blu-bank',
     ],
