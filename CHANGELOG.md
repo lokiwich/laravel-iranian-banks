@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- Card detection uses longest-prefix match so Blu (`62198619`) wins over Saman (`621986`) when the number is long enough
+
 ## [1.1.0] - 2026-07-16
 
 ### Added

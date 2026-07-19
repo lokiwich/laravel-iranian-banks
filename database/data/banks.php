@@ -4,7 +4,7 @@
  * Shetab bank directory with card BIN prefixes and Sheba (IBAN) bank codes.
  *
  * Icon slugs map to SVG filenames from snapp-store/iranian-banks-react-icons (MIT).
- * Blu Bank is listed separately (Saman subsidiary). Banks merged into Sepah are
+ * Blu Bank is listed separately (Saman subsidiary; longer card prefix wins). Banks merged into Sepah are
  * folded into the Sepah row (card BINs + historical Sheba codes).
  *
  * @return list<array{slug: string, name_fa: string, name_en: string, card_prefixes: list<string>, iban_codes?: list<string>, icon?: string, is_active?: bool}>
@@ -160,7 +160,7 @@ return [
         'slug' => 'blu',
         'name_fa' => 'بلو بانک',
         'name_en' => 'Blu Bank',
-        // Same Shetab BIN / Sheba family as Saman (subsidiary brand).
+        // Same Sheba family as Saman; longer card prefix wins via longest-prefix detect.
         'card_prefixes' => ['62198619'],
         'iban_codes' => ['056'],
         'icon' => 'blu-bank',

@@ -24,4 +24,18 @@ class CardNumberTest extends TestCase
         $this->assertNull(CardNumber::bin('60376'));
         $this->assertNull(CardNumber::bin(null));
     }
+
+    #[Test]
+    public function it_picks_the_longest_matching_prefix(): void
+    {
+        $prefixes = ['621986', '62198619'];
+
+        $this->assertSame('621986', CardNumber::bestMatchingPrefix('621986', $prefixes));
+        $this->assertSame('621986', CardNumber::bestMatchingPrefix('6219860012345678', $prefixes));
+        $this->assertSame('62198619', CardNumber::bestMatchingPrefix('62198619', $prefixes));
+        $this->assertSame('62198619', CardNumber::bestMatchingPrefix('6219861912345678', $prefixes));
+        $this->assertNull(CardNumber::bestMatchingPrefix('603769', $prefixes));
+        $this->assertNull(CardNumber::bestMatchingPrefix('62198', $prefixes));
+        $this->assertNull(CardNumber::bestMatchingPrefix(null, $prefixes));
+    }
 }

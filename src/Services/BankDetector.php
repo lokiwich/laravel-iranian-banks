@@ -11,26 +11,47 @@ class BankDetector
     /**
      * Detect an Iranian bank from a card number or BIN (6+ digits).
      *
-     * When multiple brands share a BIN (e.g. Saman / Blu), the parent bank
-     * is preferred over subsidiary brand rows.
+     * When multiple brands share a BIN family (e.g. Saman / Blu), the longest
+     * matching card prefix wins (8-digit Blu over 6-digit Saman).
      */
     public function detect(?string $cardNumber): ?Bank
     {
-        $bin = CardNumber::bin($cardNumber);
+        $digits = CardNumber::normalize($cardNumber);
 
-        if ($bin === null) {
+        if (strlen($digits) < 6) {
             return null;
         }
 
-        return Bank::query()
+        $bestBank = null;
+        $bestLen = 0;
+
+        $banks = Bank::query()
             ->where('is_active', true)
-            ->whereJsonContains('card_prefixes', $bin)
-            ->orderByRaw("CASE WHEN slug = 'blu' THEN 1 ELSE 0 END")
-            ->first();
+            ->get();
+
+        foreach ($banks as $bank) {
+            $prefix = CardNumber::bestMatchingPrefix($digits, $bank->card_prefixes ?? []);
+
+            if ($prefix === null) {
+                continue;
+            }
+
+            $len = strlen($prefix);
+
+            if ($len > $bestLen) {
+                $bestBank = $bank;
+                $bestLen = $len;
+            }
+        }
+
+        return $bestBank;
     }
 
     /**
      * Detect an Iranian bank from a Sheba / IBAN using the 3-digit bank code.
+     *
+     * When multiple brands share a Sheba code (e.g. Saman / Blu), the parent
+     * bank is preferred over subsidiary brand rows.
      */
     public function detectFromIban(?string $iban): ?Bank
     {

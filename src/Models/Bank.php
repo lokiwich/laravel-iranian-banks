@@ -128,17 +128,11 @@ class Bank extends Model
     }
 
     /**
-     * Whether this bank owns the given card BIN / number.
+     * Whether this bank owns the given card BIN / number (longest-prefix match).
      */
     public function matchesCardNumber(?string $cardNumber): bool
     {
-        $bin = CardNumber::bin($cardNumber);
-
-        if ($bin === null) {
-            return false;
-        }
-
-        return in_array($bin, $this->card_prefixes ?? [], true);
+        return CardNumber::bestMatchingPrefix($cardNumber, $this->card_prefixes ?? []) !== null;
     }
 
     /**

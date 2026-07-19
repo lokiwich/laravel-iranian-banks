@@ -170,9 +170,12 @@ class BankDetectorTest extends TestCase
     }
 
     #[Test]
-    public function it_prefers_saman_over_blu_for_shared_bin(): void
+    public function it_prefers_longest_card_prefix_for_saman_and_blu(): void
     {
         $this->assertSame('saman', IranianBanks::detect('621986')?->slug);
+        $this->assertSame('saman', IranianBanks::detect('6219860012345678')?->slug);
+        $this->assertSame('blu', IranianBanks::detect('62198619')?->slug);
+        $this->assertSame('blu', IranianBanks::detect('6219861912345678')?->slug);
         $this->assertSame('saman', IranianBanks::detectFromIban(Iban::make('056'))?->slug);
         $this->assertDatabaseHas('iranian_banks', ['slug' => 'blu']);
     }

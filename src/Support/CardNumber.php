@@ -38,6 +38,43 @@ class CardNumber
     }
 
     /**
+     * Among candidate prefixes, return the longest one that the card number starts with.
+     * Prefixes shorter than 6 digits are ignored. Returns null when nothing matches.
+     *
+     * @param  list<string>  $prefixes
+     */
+    public static function bestMatchingPrefix(?string $value, array $prefixes): ?string
+    {
+        $digits = self::normalize($value);
+
+        if (strlen($digits) < 6) {
+            return null;
+        }
+
+        $best = null;
+        $bestLen = 0;
+
+        foreach ($prefixes as $prefix) {
+            if ($prefix === '' || ! ctype_digit($prefix)) {
+                continue;
+            }
+
+            $len = strlen($prefix);
+
+            if ($len < 6 || $len <= $bestLen) {
+                continue;
+            }
+
+            if (str_starts_with($digits, $prefix)) {
+                $best = $prefix;
+                $bestLen = $len;
+            }
+        }
+
+        return $best;
+    }
+
+    /**
      * Validate a 16-digit card number using the Luhn algorithm.
      */
     public static function passesLuhn(?string $value): bool

@@ -57,6 +57,7 @@ use Lokiwich\IranianBanks\Support\CardNumber;
 use Lokiwich\IranianBanks\Support\Iban;
 
 $bank = IranianBanks::detect('6037697512345678');
+// Longest matching card_prefixes wins (e.g. Blu 62198619 over Saman 621986).
 // or
 $bank = Bank::findByCardNumber('۶۰۳۷۶۹');
 
